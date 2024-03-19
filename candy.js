@@ -16,61 +16,43 @@ window.onload=function(){
 function randomCandy(){
     return candies[Math.floor(Math.random()* candies.length)];
 }
-function startGame() {
-    for (let r = 0; r < row; r++) {
-        let newRow = [];
-        for (let c = 0; c < col; c++) {
-            let tile = document.createElement("img");
-            tile.id = r.toString() + "-" + c.toString();
-            tile.src = "./images/" + randomCandy() + ".png";
-            // Add event listeners for both touch events and mouse events
-            tile.addEventListener("touchstart", handleTouchStart);
-            tile.addEventListener("touchmove", handleTouchMove);
-            tile.addEventListener("touchend", handleTouchEnd);
-            tile.addEventListener("mousedown", handleMouseDown);
-            tile.addEventListener("mousemove", handleMouseMove);
-            tile.addEventListener("mouseup", handleMouseUp);
-            document.getElementById("board").append(tile);
-            newRow.push(tile);
+function startGame(){
+    for(let r=0;r<row;r++){
+        let row=[];
+        for(let c=0;c<col;c++){
+        let tile=document.createElement("img");
+        tile.id=r.toString()+"-"+c.toString();
+        tile.src="./images/"+randomCandy()+".png";
+        tile.addEventListener("dragstart",dragStart);
+        tile.addEventListener("dragover",dragOver);
+        tile.addEventListener("dragenter",dragEnter);
+        tile.addEventListener("dragleave",dragLeave);
+        tile.addEventListener("drop",dragDrop);
+        tile.addEventListener("dragend",dragEnd);
+        
+         document.getElementById("board").append(tile);
+         row.push(tile);
         }
-        board.push(newRow);
+        board.push(row);
     }
     console.log(board);
 }
 
 
-
-function handleTouchStart(event) {
-    event.preventDefault();
-    currTile = this;
+function dragStart(){
+    currTile=this;
 }
-
-function handleTouchMove(event) {
-    event.preventDefault();
-    // Implement touch move handling if necessary
+function dragOver(e){
+    e.preventDefault();
 }
-
-function handleTouchEnd(event) {
-    event.preventDefault();
-    otherTile = this;
-    // Call dragEnd function after touch end
-    dragEnd();
+function dragEnter(e){
+    e.preventDefault();
 }
-
-function handleMouseDown(event) {
-    event.preventDefault();
-    currTile = this;
+function dragLeave(e){
+     
 }
-
-function handleMouseMove(event) {
-    event.preventDefault();
-    // Implement mouse move handling if necessary
-}
-function handleMouseUp(event) {
-    event.preventDefault();
-    otherTile = this;
-    // Call dragEnd function after mouse up
-    dragEnd();
+function dragDrop(){
+    otherTile=this;
 }
 function dragEnd(){
     if(currTile.src.includes("blank")||otherTile.src.includes("blank"))
